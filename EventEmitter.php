@@ -1,6 +1,6 @@
 <?php
 
-namespace node\events;
+namespace events;
 
 /**
  * Provide methods to fire and listen events
