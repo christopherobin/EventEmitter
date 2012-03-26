@@ -1,11 +1,10 @@
 # EventEmitter
 
-This is a direct port of the [_EventEmitter_](https://github.com/joyent/node/blob/master/lib/events.js) class from [node.js](https://github.com/joyent/node/) to using PHP 5.4 traits.
+This is a direct port of the [_EventEmitter_](https://github.com/joyent/node/blob/master/lib/events.js) class from [node.js](https://github.com/joyent/node/) using PHP 5.4 traits.
 
 ## Why PHP 5.4?
 
-Due to the nature of the EventEmitter functionnality, using simple extends sounds like the wrong way to deal with it as it is a set of functionnality to add to an existing class instead of your class extending the functionnalities of the EventEmitter.
-
+Due to the nature of the _EventEmitter_ functionnality, using simple extends sounds like the wrong way to deal with it as it is a set of functionnality to add to an existing class instead of your class extending the functionnalities of EventEmitter.
 As such traits are the best way to implement this kind of functionnality and those are only available to PHP 5.4+.
 
 ## How to Use
