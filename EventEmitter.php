@@ -10,14 +10,12 @@ namespace events;
 * @license    MIT License
 */
 trait EventEmitter {
-    // this is a safe default
-    const DEFAULT_MAX_LISTENERS = 10;
-
     // holds our events and their callbacks (the underscore is to try to
     // prevent name collisions as PHP prevents classes using this trait to
     // declare a property with the same name)
     private $_events = [];
-    private $_max_listeners = self::DEFAULT_MAX_LISTENERS;
+    // this is a safe default
+    private $_max_listeners = 10;
 
     public function setMaxListeners($value) {
         $this->_max_listeners = $value;
@@ -106,7 +104,7 @@ trait EventEmitter {
     * @param string $handler The callback to unregister
     */
     public function off($event, callable $handler) {
-        if (!isset($this->_events[$type]) || !$this->_events[$type]) return $this;
+        if (!isset($this->_events[$event]) || !$this->_events[$event]) return $this;
         $key = array_search($handler, $this->_events[$event]);
         if ($key === false) return $this;
         array_splice($this->_events[$event], $key, 1);
