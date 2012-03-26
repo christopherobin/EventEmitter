@@ -15,17 +15,18 @@ As such traits are the best way to implement this kind of functionnality and tho
 
 require_once('EventEmitter.php');
 
+// test class
 class Item {
   use \events\EventEmitter;
 
-  public function Register($infos) {
+  public function register($infos) {
     // do something
     // fire the event
-    $this->fire('register', $infos);
+    $this->emit('register', $infos);
   }
 }
 
-// test
+// create an instance of our object
 $i = new Item();
 // register an observer for the register event
 $i->on('register', function($infos) {
