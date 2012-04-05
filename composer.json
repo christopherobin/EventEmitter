@@ -1,0 +1,20 @@
+{
+	"name": "nekoo/EventEmitter",
+	"type": "library",
+	"description": "Port of NodeJSs EventEmitter to PHP 5.4 using traits",
+	"keywords": ["event", "observer", "listener"],
+	"homepage": "https://github.com/christopherobin/EventEmitter",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Christophe Robin",
+			"email": "crobin@nekoo.com"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0"
+	},
+	"autoload": {
+		"psr-0": { "Nekoo": "src/" }
+	}
+}

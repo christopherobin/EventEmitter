@@ -1,6 +1,7 @@
 <?php
 
-require_once('EventEmitter.php');
+require_once('../src/EventEmitter.php');
+require_once('../src/EventEmitterInterface.php');
 
 // basic test handler
 function test($test_name, $a, $b) {
@@ -8,8 +9,8 @@ function test($test_name, $a, $b) {
 }
 
 // basic class for testing
-class Object implements \events\EventEmitterInterface {
-    use \events\EventEmitter;
+class Object implements \Nekoo\EventEmitterInterface {
+    use \Nekoo\EventEmitter;
 
     public function test1() {
         $this->emit('test1', 42);
