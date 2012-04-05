@@ -8,7 +8,7 @@ function test($test_name, $a, $b) {
 }
 
 // basic class for testing
-class Object {
+class Object implements \events\EventEmitterInterface {
     use \events\EventEmitter;
 
     public function test1() {
@@ -28,6 +28,7 @@ $checks = [
 
 $o = new Object();
 
+$o->all(function($event) { echo "all: event $event called\n"; });
 // first test, basic events
 $o->on('test1', function($data) use(&$checks) { $checks['test1'] = $data; });
 $o->test1();
@@ -39,6 +40,7 @@ $o->test1();
 test('listeners removed', $checks['test1'], 42);
 
 // event chaining
+$o->all(function($event, $arg1) { echo "all: event $event($arg1) called\n"; });
 $o->on('test1', function($data) use(&$checks) { $checks['test1'] += $data; })
   ->on('test1', function($data) use(&$checks) { $checks['test1'] += $data*3; });
 $o->test1();

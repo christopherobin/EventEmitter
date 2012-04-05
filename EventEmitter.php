@@ -3,6 +3,23 @@
 namespace events;
 
 /**
+* This interface allows the developer to check whether EventEmitter is used on a class or not
+* Checking if the trait is here is unreliable as the developer may have aliased methods, this
+* interface prevent this.
+*/
+interface EventEmitterInterface {
+    public function setMaxListeners($value);
+    public function on($event, callable $handler);
+    public function addListener();
+    public function once($event, callable $handler);
+    public function all(callable $handler);
+    public function off($event, callable $handler);
+    public function removeListener();
+    public function removeAllListeners($event);
+    public function getListeners($event);
+}
+
+/**
 * Provide methods to fire and listen events
 *
 * @category   Utility
@@ -33,6 +50,12 @@ trait EventEmitter {
         $args = func_get_args();
         $event = array_shift($args);
 
+
+        // the listeners defined on the magic event __all are called for every events
+        if ($event !== '__all') {
+            call_user_func_array(array($this, 'emit'), array_merge(['__all'], func_get_args()));
+        }
+
         if ($event === 'error') {
             if (!isset($this->_events[$event]) || !$this->_events[$event]) {
                 if ($args[0] instanceof \Exception) throw $args[0];
@@ -57,7 +80,7 @@ trait EventEmitter {
     *
     * @access public
     * @param string $event The event name
-    * @param string $handler The callback to call
+    * @param callable $handler The callback to call
     */
     public function on($event, callable $handler) {
         if (!isset($this->_events[$event])) $this->_events[$event] = [];
@@ -80,11 +103,21 @@ trait EventEmitter {
     }
 
     /**
+    * Add a listener on every events, this listener receive the event name as a first argument
+    *
+    * @access public
+    * @param callable $handler The global handler
+    */
+    public function all(callable $handler) {
+        $this->on('__all', $handler);
+    }
+
+    /**
     * Register a listener that is called only once
     *
     * @access public
     * @param string $event The event name
-    * @param string $handler The callback to call
+    * @param callable $handler The callback to call
     */
     public function once($event, callable $handler) {
         $g = function() use ($event, $handler, &$g) {
@@ -101,7 +134,7 @@ trait EventEmitter {
     *
     * @access public
     * @param string $event The event name
-    * @param string $handler The callback to unregister
+    * @param callable $handler The callback to unregister
     */
     public function off($event, callable $handler) {
         if (!isset($this->_events[$event]) || !$this->_events[$event]) return $this;
