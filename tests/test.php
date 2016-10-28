@@ -1,7 +1,7 @@
 <?php
 
-require_once('../src/EventEmitter.php');
-require_once('../src/EventEmitterInterface.php');
+require_once('../src/Nekoo/EventEmitter.php');
+require_once('../src/Nekoo/EventEmitterInterface.php');
 
 // basic test handler
 function test($test_name, $a, $b) {
@@ -34,6 +34,19 @@ $o->all(function($event) { echo "all: event $event called\n"; });
 $o->on('test1', function($data) use(&$checks) { $checks['test1'] = $data; });
 $o->test1();
 test('basic event', $checks['test1'], 42);
+
+// Max listeners
+$o->removeAllListeners();
+$launched = false;
+try {
+    $o->setMaxListeners(2);
+    $o->on('something', function(){});
+    $o->on('something', function(){});
+    $o->on('something', function(){});
+} catch (Exception $e) {
+    $launched = true;
+}
+test('exception has been launched',$launched,true);
 
 // reset test
 $o->removeAllListeners();
