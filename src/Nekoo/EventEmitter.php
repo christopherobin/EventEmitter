@@ -42,7 +42,7 @@ trait EventEmitter {
         if ($event === 'error') {
             if (!isset($this->_events[$event]) || !$this->_events[$event]) {
                 if ($args[0] instanceof \Exception) throw $args[0];
-                throw new Exception('Uncaught, unspecified \'error\' event.');
+                throw new \Exception('Uncaught, unspecified \'error\' event.');
             }
         }
 
@@ -69,7 +69,7 @@ trait EventEmitter {
         if (!isset($this->_events[$event])) $this->_events[$event] = [];
         $this->_events[$event][] = $handler;
         if ($this->_max_listeners && (count($this->_events[$event]) > $this->_max_listeners)) {
-            throw new Exception(
+            throw new \Exception(
                 'Possible EventEmitter leak detected. '
                 . count($this->_events[$event]) . ' listeners added. '
                 . 'Use ' . get_class($this) . '->setMaxListeners() to increase limit.'
