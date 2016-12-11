@@ -111,19 +111,49 @@ EOT;
 
     public function test_It_Can_Remove_Listeners_With_Off()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $stub = $this->createStubObjectWithACoupleOfMethods(['method1','method2']);
+
+        $callables = [
+            [$stub,'method1'],
+            function(){
+            }
+        ];
+
+        ($this->AClassWithTheTrait)::addListener('event',$callables[0]);
+        ($this->AClassWithTheTrait)::addListener('event',$callables[1]);
+
+        ($this->AClassWithTheTrait)::off('event',$callables[1]);
+        $listeners = ($this->AClassWithTheTrait)::getListeners('event');
+        $this->assertEquals($listeners,[$callables[0]]);
+
+        ($this->AClassWithTheTrait)::off('event',$callables[0]);
+        $listeners = ($this->AClassWithTheTrait)::getListeners('event');
+        $this->assertEquals($listeners,[]);
     }
 
     public function test_It_Can_Remove_Listeners_With_removeListener()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $stub = $this->createStubObjectWithACoupleOfMethods(['method1','method2']);
+
+        $callables = [
+            [$stub,'method1'],
+            function(){
+            }
+        ];
+
+        ($this->AClassWithTheTrait)::addListener('event',$callables[0]);
+        ($this->AClassWithTheTrait)::addListener('event',$callables[1]);
+
+        ($this->AClassWithTheTrait)::removeListener('event',$callables[0]);
+        $listeners = ($this->AClassWithTheTrait)::getListeners('event');
+        $this->assertEquals($listeners,[$callables[1]]);
+
+        ($this->AClassWithTheTrait)::removeListener('event',$callables[1]);
+        $listeners = ($this->AClassWithTheTrait)::getListeners('event');
+        $this->assertEquals($listeners,[]);
     }
 
-    public function test_It_Can_Not_Register_More_Listener_Than_MaxListeners()
+    public function xtest_It_Can_Not_Register_More_Listener_Than_MaxListeners()
     {
         ($this->AClassWithTheTrait)::setMaxListeners(3);
         ($this->AClassWithTheTrait)::on('whatever',function(){});
@@ -137,9 +167,28 @@ EOT;
 
     public function test_It_Emitts_Events()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $eventdata = ['foo','bar'];
+
+        $stub = $this->createStubObjectWithACoupleOfMethods(['method1','method2']);
+
+        $stub->expects($this->once())
+            ->method('method1')
+            ->with($eventdata);
+
+        $stub->expects($this->once())
+            ->method('method2')
+            ->with($eventdata);
+
+        $callables = [
+            [$stub,'method1'],
+            function($data) use ($stub){
+                $stub->method2($data);
+            }
+        ];
+
+        ($this->AClassWithTheTrait)::addListener('event',$callables[0]);
+        ($this->AClassWithTheTrait)::addListener('event',$callables[1]);
+        ($this->AClassWithTheTrait)::emitSomething('event',$eventdata);
     }
 
 }

@@ -9,6 +9,12 @@ class EmitterRelayer
     {
         $this->id = rand(1,1000);
     }
+    // Proxy to protected function
+    public function __emit()
+    {
+        $args = func_get_args();
+        return call_user_func_array([$this,'emit'], $args);
+    }
 }
 
 trait StaticEventEmitter
@@ -55,7 +61,7 @@ trait StaticEventEmitter
 
     // This function admits variable parameters
     protected static function emit() {
-        return call_user_func_array([__CLASS__, '__se__callAMethodOfTheEmitter'],array_merge(['emit'], func_get_args()));
+        return call_user_func_array([__CLASS__, '__se__callAMethodOfTheEmitter'],array_merge(['__emit'], func_get_args()));
     }
 
     public static function on($event, callable $handler)
