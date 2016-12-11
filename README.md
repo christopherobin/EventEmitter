@@ -48,7 +48,9 @@ $i->register(array('key' => 'value'));
 
 You can also use a class as an EventEmitter, withouth the need to instantiate an object. The API is the same as object emitters: 
 
-```
+```php
+<?php
+
 class EmitThings {
   use \Nekoo\StaticEventEmitter;
 
