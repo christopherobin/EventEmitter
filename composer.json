@@ -1,5 +1,5 @@
 {
-	"name": "nekoo/EventEmitter",
+	"name": "nekoo/event-emitter",
 	"type": "library",
 	"description": "Port of NodeJSs EventEmitter to PHP 5.4 using traits",
 	"keywords": ["event", "observer", "listener"],
