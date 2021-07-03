@@ -46,6 +46,30 @@ $i->on('register', function($infos) {
 $i->register(array('key' => 'value'));
 ```
 
+You can also use a class as an EventEmitter, withouth the need to instantiate an object. The API is the same as object emitters: 
+
+```php
+<?php
+
+class EmitThings {
+  use \Nekoo\StaticEventEmitter;
+
+  public static function register($infos) {
+    // do something
+    // fire the event
+    static::emit('register', $infos);
+  }
+}
+
+// register an observer for the register event
+EmitThings::on('register', function($infos) {
+    echo "Item registered!\n";
+    var_dump($infos);
+});
+// call the method
+EmitThings::register(array('key' => 'value'));
+```
+
 ## API
 
 * [setMaxListeners(int)](https://github.com/christopherobin/EventEmitter/blob/master/src/EventEmitter.php#L20)<br>
